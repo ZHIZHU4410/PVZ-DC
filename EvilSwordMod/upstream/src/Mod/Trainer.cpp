@@ -55,7 +55,8 @@ static bool MoveSelectedPlant(Board* board, Plant* selected, int col, int row) {
     const int width=cob ? 2 : 1;
     Plant* member=nullptr;
     while (board->IteratePlants(member)) {
-        if (member->mPlantCol==oldCol && member->mRow==oldRow &&
+        if (member->mPlantCol>=oldCol && member->mPlantCol<oldCol+width &&
+            member->mRow==oldRow &&
             (member->NotOnGround() ||
              member->mOnBungeeState==PlantOnBungeeState::GETTING_GRABBED_BY_BUNGEE)) {
             moveMessage="植物正在移动或被抓取";
@@ -77,7 +78,8 @@ static bool MoveSelectedPlant(Board* board, Plant* selected, int col, int row) {
         Plant* occupant=nullptr;
         while (board->IteratePlants(occupant)) {
             if (CoversCell(occupant,col+offset,row) &&
-                !(occupant->mPlantCol==oldCol && occupant->mRow==oldRow)) {
+                !(occupant->mPlantCol>=oldCol && occupant->mPlantCol<oldCol+width &&
+                  occupant->mRow==oldRow)) {
                 moveMessage="目标格已有植物";
                 return false;
             }
@@ -90,12 +92,16 @@ static bool MoveSelectedPlant(Board* board, Plant* selected, int col, int row) {
         }
         board->mApp->mZenGarden->MovePlant(selected,col,row);
     } else {
-        const int dx=board->GridToPixelX(col,row)-board->GridToPixelX(oldCol,oldRow);
-        const int dy=board->GridToPixelY(col,row)-board->GridToPixelY(oldCol,oldRow);
         Plant* plant=nullptr;
         while (board->IteratePlants(plant)) {
-            if (plant->mPlantCol!=oldCol || plant->mRow!=oldRow || plant->NotOnGround()) continue;
-            plant->mPlantCol=col;
+            if (plant->mPlantCol<oldCol || plant->mPlantCol>=oldCol+width ||
+                plant->mRow!=oldRow || plant->NotOnGround()) continue;
+            const int newCol=plant->mPlantCol+(col-oldCol);
+            const int dx=board->GridToPixelX(newCol,row)-
+                board->GridToPixelX(plant->mPlantCol,oldRow);
+            const int dy=board->GridToPixelY(newCol,row)-
+                board->GridToPixelY(plant->mPlantCol,oldRow);
+            plant->mPlantCol=newCol;
             plant->mRow=row;
             plant->mStartRow=row;
             plant->mX+=dx;
