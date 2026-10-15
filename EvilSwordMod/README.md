@@ -26,8 +26,12 @@
 | F6 | 无限阳光：战斗时保持 9990 阳光 |
 | F7 | 植物卡牌无冷却 |
 | F8 | 普通植物无敌；诅咒剑草仍会触发诅咒 |
+| F9 | 降低游戏速度：8×、4×、2×、1×、0.25×逐档切换 |
+| F10 | 提高游戏速度：0.25×、1×、2×、4×、8×逐档切换 |
 
-游戏画面底部显示三个开关的当前状态。开关默认关闭，每次启动重置。
+游戏画面底部显示开关和速度状态。开关默认关闭，速度默认 1×，每次启动重置。
+
+诅咒剑草在草地上待机时会左右轻摆；攻击时按 A、B、A 连击顺序播放《Dead Cells》诅咒之刃在 `data.cdb` 中指定的 `fxSaberA`/`fxSaberB` 图集帧。本机帧文件位于 `EvilSwordMod\private-dc-fx`，由 `extract_dc_fx.py` 从用户自己拥有的 Dead Cells `res` 目录只读提取。重新提取时运行 `py -m pip install Pillow`，再运行 `py EvilSwordMod\extract_dc_fx.py --res "你的 Dead Cells res 目录"`；随后重启 MOD。私有帧不随开源仓库发布。
 
 ## 你可以这样测试
 
@@ -42,6 +46,6 @@
 
 ## 开发与来源
 
-运行 `powershell -ExecutionPolicy Bypass -File EvilSwordMod\build.ps1` 编译；成功后程序位于 `EvilSwordMod\build\pvz-portable.exe`。开源基础沿用 LGPL-3.0-or-later；代码修改位于 `EvilSwordMod\upstream`，MOD 清单与资源位于其 `mods\evilsword` 子目录。Dead Cells 的只读资源仅用于造型与设定参考，没有改动该游戏目录。
+运行 `powershell -ExecutionPolicy Bypass -File EvilSwordMod\build.ps1` 编译；成功后程序位于 `EvilSwordMod\build\pvz-portable.exe`。开源基础沿用 LGPL-3.0-or-later；代码修改位于 `EvilSwordMod\upstream`，MOD 清单与资源位于其 `mods\evilsword` 子目录。Dead Cells 的资源只读用于造型参考和玩家本机特效提取，不改动该游戏目录。
 
-`EvilSwordMod\reference`、`backup`、`save`、`toolchain`、`venv` 和构建产物均为本机工作文件，包含用户自己的游戏资源或环境，不应随 MOD 公开发布。
+`EvilSwordMod\reference`、`private-dc-fx`、`backup`、`save`、`toolchain`、`venv` 和构建产物均为本机工作文件，包含用户自己的游戏资源或环境，不应随 MOD 公开发布。

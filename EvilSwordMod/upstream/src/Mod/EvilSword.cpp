@@ -17,7 +17,9 @@
 #include "Trainer.h"
 #include "../Sexy.TodLib/TodDebug.h"
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <filesystem>
@@ -25,6 +27,20 @@
 
 namespace EvilSword {
 static bool captureRequested=false;
+static bool slashFramesLoaded=false;
+static std::array<Sexy::Image*,7> slashA{};
+static std::array<Sexy::Image*,7> slashB{};
+static void LoadSlashFrames() {
+    if (slashFramesLoaded || !gLawnApp) return;
+    slashFramesLoaded=true;
+    for (int frame=0;frame<7;++frame) {
+        char path[64];
+        std::snprintf(path,sizeof(path),"images/EvilSwordSlashA_%02d.png",frame);
+        slashA[frame]=gLawnApp->GetImage(path);
+        std::snprintf(path,sizeof(path),"images/EvilSwordSlashB_%02d.png",frame);
+        slashB[frame]=gLawnApp->GetImage(path);
+    }
+}
 bool Is(const Plant* p) {
     if (!p || static_cast<int>(p->mSeedType)<2000) return false;
     auto def=gModRegistry.FindPlantByRuntimeId(static_cast<int>(p->mSeedType));
@@ -81,6 +97,7 @@ void Update(Plant* p) {
     target->TakeBodyDamage(damage,0U);
     p->mStateCountdown=100;
     p->mShootingCounter=18;
+    p->mLaunchCounter=(p->mLaunchCounter+1)%3; // Dead Cells EvilSword's A, B, A strike chain.
     TodLog("[EvilSword] slash zombie=%d damage=%d body=%d helm=%d shield=%d",(int)target->mZombieType,damage,target->mBodyHealth,target->mHelmHealth,target->mShieldHealth);
 }
 bool Bite(Zombie* z, Plant* target) {
@@ -97,10 +114,21 @@ bool Draw(Plant* p, Sexy::Graphics* g, float y) {
     // GetImage allocates a GL image; the registered seed image is already cached.
     auto image=Plant::GetImage(p->mSeedType);
     if (image) {
+        const double sway=p->mBoard && p->IsInPlay() ?
+            0.085*std::sin((p->mBoard->mMainCounter+p->mRow*29+p->mPlantCol*11)*0.055) : 0.0;
         if (p->mShootingCounter>0) {
             const double progress=(18.0-p->mShootingCounter)/18.0;
-            g->DrawImageRotated(image,0,(int)y,-0.22*std::sin(progress*3.14159265),24,64);
-        } else g->DrawImage(image,0,(int)y);
+            g->DrawImageRotated(image,0,(int)y,sway*0.2-0.24*std::sin(progress*3.14159265),40,68);
+            LoadSlashFrames();
+            const int frame=std::clamp((18-p->mShootingCounter)*7/18,0,6);
+            Sexy::Image* slash=(p->mLaunchCounter==2 ? slashB[frame] : slashA[frame]);
+            if (slash) {
+                Sexy::Graphics effect(*g);
+                effect.SetColorizeImages(true);
+                effect.SetColor(Sexy::Color(255,79,0));
+                effect.DrawImage(slash,20,(int)y-12);
+            }
+        } else g->DrawImageRotated(image,0,(int)y,sway,40,68);
     }
     return true;
 }

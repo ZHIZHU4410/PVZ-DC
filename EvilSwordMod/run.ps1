@@ -9,6 +9,11 @@ Copy-Item (Join-Path $source 'mod.json') $target -Force
 New-Item -ItemType Directory -Force (Join-Path $target 'scripts'),(Join-Path $target 'resources\images'),(Join-Path $target 'resources\properties') | Out-Null
 Copy-Item (Join-Path $source 'scripts\main.lua') (Join-Path $target 'scripts\main.lua') -Force
 Copy-Item (Join-Path $source 'resources\images\EvilSword.png') (Join-Path $target 'resources\images\EvilSword.png') -Force
+$fxSource = Join-Path $modRoot 'private-dc-fx'
+if (Test-Path $fxSource) {
+    Get-ChildItem -LiteralPath $fxSource -Filter 'EvilSwordSlash*.png' -File |
+        ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $target 'resources\images') -Force }
+}
 $properties = Join-Path $source 'resources\properties\default.xml'
 if (Test-Path $properties) { Copy-Item $properties (Join-Path $target 'resources\properties\default.xml') -Force }
 $saveDir = Join-Path $modRoot 'save'

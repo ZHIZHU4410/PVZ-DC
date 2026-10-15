@@ -8,6 +8,8 @@
 - 1132 个字符串键的中文覆盖和主菜单图片英文按钮的中文遮盖。长篇图鉴、成就等内容采用机器翻译，仍可能有不自然的措辞或漏网的图片文字。
 - 独立存档全解锁：关卡、模式、植物、商店物品和 10 个卡槽。关卡选择器可直达冒险关卡 1–50。
 - 修改器：F6 无限阳光、F7 卡牌无冷却、F8 普通植物无敌；F8 不保护诅咒剑草。开关默认关闭。
+- F9 降速、F10 加速，在 0.25×、1×、2×、4×、8× 之间切换；底部状态栏显示当前速度。
+- 诅咒剑草待机时左右轻摆，攻击时可播放诅咒之刃在 Dead Cells `data.cdb` 中指定的 `fxSaberA`/`fxSaberB` 图集动画。
 
 ## Windows 安装与构建
 
@@ -17,12 +19,19 @@
 2. 在该目录的 PowerShell 中运行：
 
    ```powershell
-   py -m pip install zstandard
+   py -m pip install zstandard Pillow
    py EvilSwordMod\bootstrap_toolchain.py
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File EvilSwordMod\build.ps1
    ```
 
-3. 双击 `启动诅咒剑草MOD.bat` 进入主菜单；双击 `选择关卡启动MOD.bat`，输入 1–50，可直接进入指定冒险关卡。
+3. 要显示原版诅咒之刃的攻击特效，请从**你自己的** Dead Cells 安装中提取帧（只读）：
+
+   ```powershell
+   py EvilSwordMod\extract_dc_fx.py --res "你的 Dead Cells 解包资源目录\res"
+   ```
+
+   该目录应包含 `data.cdb` 和 `atlas/fxWeapon.atlas`。脚本仅把生成的 14 帧写到 `EvilSwordMod/private-dc-fx`，仓库不会上传这些游戏素材。没有这些帧时，植物仍可攻击，但只显示原有挥动效果。
+4. 双击 `启动诅咒剑草MOD.bat` 进入主菜单；双击 `选择关卡启动MOD.bat`，输入 1–50，可直接进入指定冒险关卡。
 
 MOD 存档在 `EvilSwordMod/save`，不使用原版 Steam 存档。更详细的游玩检查清单见 [MOD 说明](EvilSwordMod/README.md)。若无需 MOD，关闭 MOD 程序并移除你复制的本仓库文件即可；原版可继续通过 Steam 启动。
 
