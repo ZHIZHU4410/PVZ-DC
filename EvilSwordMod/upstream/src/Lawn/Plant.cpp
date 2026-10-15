@@ -27,6 +27,7 @@
 #include "../Mod/ModRegistry.h"
 #include "../Mod/EvilSword.h"
 #include "../Mod/LightningWhip.h"
+#include "../Mod/RevengeSword.h"
 #include "Cutscene.h"
 #include "GridItem.h"
 #include "ZenGarden.h"
@@ -510,6 +511,8 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mPlantHealth *= 2;
     }
     mPlantMaxHealth = mPlantHealth;
+    if (RevengeSword::Is(this))
+        mPlantHealth = mPlantMaxHealth = 2400;
 
     if (mSeedType != SeedType::SEED_FLOWERPOT && IsOnBoard())
     {
@@ -2900,6 +2903,8 @@ void Plant::Update()
         EvilSword::Update(this);
     if (doUpdate && static_cast<int>(mSeedType) >= 2000)
         LightningWhip::Update(this);
+    if (doUpdate && static_cast<int>(mSeedType) >= 2000)
+        RevengeSword::Update(this);
     if (doUpdate && !mDead && static_cast<int>(mSeedType) >= 2000)
         gModLua.CallOnPlantUpdate(this);
 }
@@ -3231,7 +3236,7 @@ void Plant::AnimatePumpkin()
 
 void Plant::UpdateShooting()
 {
-    if (EvilSword::Is(this) || LightningWhip::Is(this)) {
+    if (EvilSword::Is(this) || LightningWhip::Is(this) || RevengeSword::Is(this)) {
         if (mShootingCounter>0) --mShootingCounter;
         return;
     }
@@ -3974,6 +3979,7 @@ void Plant::Draw(Graphics* g)
     float aOffsetY = PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow);
     if (EvilSword::Draw(this, g, aOffsetY)) return;
     if (LightningWhip::Draw(this, g, aOffsetY)) return;
+    if (RevengeSword::Draw(this, g, aOffsetY)) return;
     if (Plant::IsFlying(mSeedType) && mSquished)
     {
         aOffsetY += 30.0f;

@@ -21,4 +21,15 @@ function OnModInit()
         image = "images/LightningWhip.png"
     })
     if not lightning then error(lightningErr) end
+    local revenge, revengeErr = Game.RegisterPlant({
+        id = "RevengeSword",
+        name = "复仇剑草",
+        description = "厚实的叶甲赋予它 2400 点生命。挥剑攻击前方一格，按四段连招出手；每次受到伤害后，接下来的 8 秒攻击间隔减半。",
+        cost = 200,
+        cooldown = 2000,
+        packetIndex = 51,
+        subClass = 0,
+        image = "images/RevengeSword.png"
+    })
+    if not revenge then error(revengeErr) end
 end
