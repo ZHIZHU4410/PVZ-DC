@@ -9,6 +9,7 @@ Copy-Item (Join-Path $source 'mod.json') $target -Force
 New-Item -ItemType Directory -Force (Join-Path $target 'scripts'),(Join-Path $target 'resources\images'),(Join-Path $target 'resources\properties') | Out-Null
 Copy-Item (Join-Path $source 'scripts\main.lua') (Join-Path $target 'scripts\main.lua') -Force
 Copy-Item (Join-Path $source 'resources\images\EvilSword.png') (Join-Path $target 'resources\images\EvilSword.png') -Force
+Copy-Item (Join-Path $source 'resources\images\LightningWhip.png') (Join-Path $target 'resources\images\LightningWhip.png') -Force
 $fxSource = Join-Path $modRoot 'private-dc-fx'
 if (Test-Path $fxSource) {
     Get-ChildItem -LiteralPath $fxSource -Filter 'EvilSwordSlash*.png' -File |

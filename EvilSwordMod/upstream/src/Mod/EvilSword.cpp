@@ -187,7 +187,8 @@ void Bridge() {
     } else if(action=="almanac") app->DoAlmanacDialog(SeedType(2000),ZombieType::ZOMBIE_INVALID);
     else if(action=="plant" && app->mBoard) {
         int type,row,col; cmd>>type>>row>>col;
-        if (row>=0 && row<5 && col>=0 && col<9 && (type==2000 || (type>=0 && type<49)))
+        if (row>=0 && row<5 && col>=0 && col<9 &&
+            (gModRegistry.FindPlantByRuntimeId(type) || (type>=0 && type<49)))
             app->mBoard->AddPlant(col,row,SeedType(type),SeedType::SEED_NONE);
     } else if(action=="zombie" && app->mBoard) {
         int type,row; float x; cmd>>type>>row>>x;

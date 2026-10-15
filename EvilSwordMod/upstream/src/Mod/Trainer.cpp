@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #include "Trainer.h"
 #include "EvilSword.h"
+#include "LightningWhip.h"
 #include "../Lawn/Board.h"
 #include "../Lawn/Plant.h"
 #include "../Lawn/SeedPacket.h"
@@ -227,6 +228,7 @@ bool KeyDown(Sexy::KeyCode key) {
 }
 void Update(Board* board) {
     if (!board) return;
+    LightningWhip::UpdateShocks(board);
     if (board!=moveBoard || !CanUseMoveTool(board)) {
         moveBoard=board;
         moveTool=false;

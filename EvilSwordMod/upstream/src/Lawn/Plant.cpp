@@ -26,6 +26,7 @@
 #include "../Mod/ModLua.h"
 #include "../Mod/ModRegistry.h"
 #include "../Mod/EvilSword.h"
+#include "../Mod/LightningWhip.h"
 #include "Cutscene.h"
 #include "GridItem.h"
 #include "ZenGarden.h"
@@ -2897,6 +2898,8 @@ void Plant::Update()
 
     if (doUpdate && static_cast<int>(mSeedType) >= 2000)
         EvilSword::Update(this);
+    if (doUpdate && static_cast<int>(mSeedType) >= 2000)
+        LightningWhip::Update(this);
     if (doUpdate && !mDead && static_cast<int>(mSeedType) >= 2000)
         gModLua.CallOnPlantUpdate(this);
 }
@@ -3228,7 +3231,10 @@ void Plant::AnimatePumpkin()
 
 void Plant::UpdateShooting()
 {
-    if (EvilSword::Is(this)) { if (mShootingCounter>0) --mShootingCounter; return; }
+    if (EvilSword::Is(this) || LightningWhip::Is(this)) {
+        if (mShootingCounter>0) --mShootingCounter;
+        return;
+    }
     if (NotOnGround() || mShootingCounter == 0)
         return;
 
@@ -3967,6 +3973,7 @@ void Plant::Draw(Graphics* g)
     float aOffsetX = 0.0f;
     float aOffsetY = PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow);
     if (EvilSword::Draw(this, g, aOffsetY)) return;
+    if (LightningWhip::Draw(this, g, aOffsetY)) return;
     if (Plant::IsFlying(mSeedType) && mSquished)
     {
         aOffsetY += 30.0f;

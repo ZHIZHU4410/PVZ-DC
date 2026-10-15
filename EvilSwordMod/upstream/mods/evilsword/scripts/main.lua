@@ -10,4 +10,15 @@ function OnModInit()
         image = "images/EvilSword.png"
     })
     if not seed then error(err) end
+    local lightning, lightningErr = Game.RegisterPlant({
+        id = "LightningWhip",
+        name = "电鞭藤",
+        description = "挥动带电藤鞭，攻击前方约三格的僵尸并无视盾牌。第三击威力更强；电流会跳向目标附近至多三个敌人，造成一半直接伤害，并留下两秒电击。",
+        cost = 175,
+        cooldown = 1500,
+        packetIndex = 50,
+        subClass = 0,
+        image = "images/LightningWhip.png"
+    })
+    if not lightning then error(lightningErr) end
 end

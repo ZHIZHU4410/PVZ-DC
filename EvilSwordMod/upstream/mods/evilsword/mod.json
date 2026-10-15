@@ -1,9 +1,9 @@
 {
   "id": "evilsword",
-  "name": "诅咒剑草",
-  "version": "1.2.0",
+  "name": "诅咒剑草与电鞭藤",
+  "version": "1.3.0",
   "author": "Local PvZ mod",
-  "description": "Dead Cells inspired cursed melee plant, Chinese localization, and full unlock",
+  "description": "Dead Cells inspired EvilSword and LightningWhip plants, Chinese localization, and full unlock",
   "priority": 100,
   "entry": "scripts/main.lua"
 }
