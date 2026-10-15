@@ -1,0 +1,31 @@
+# User-owned game data and Steam binaries
+main.pak
+main.unpak
+PlantsVsZombies.exe
+steam_api.dll
+bass.dll
+/properties/
+/drm/
+
+# Local build and private working files
+EvilSwordMod/build/
+EvilSwordMod/toolchain/
+EvilSwordMod/save/
+EvilSwordMod/backup/
+EvilSwordMod/reference/
+EvilSwordMod/publish/
+EvilSwordMod/venv/
+EvilSwordMod/argos-*/
+EvilSwordMod/*.log
+EvilSwordMod/*.argospmodel
+EvilSwordMod/*.argosmodel
+**/__pycache__/
+*.pyc
+.env
+.env.*
+
+# Do not commit compiled binaries and local IDE state
+*.exe
+*.dll
+*.pdb
+.vs/

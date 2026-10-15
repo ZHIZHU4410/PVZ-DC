@@ -1,0 +1,9 @@
+{
+  "id": "peashooter_plus",
+  "name": "Peashooter Plus",
+  "version": "1.0.0",
+  "author": "pvz-portable",
+  "description": "A powerful peashooter that fires super winter melon projectiles",
+  "priority": 100,
+  "entry": "scripts/main.lua"
+}
