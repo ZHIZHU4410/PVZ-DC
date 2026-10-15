@@ -23,11 +23,16 @@ bool KeyDown(Sexy::KeyCode key) {
 void Update(Board* board) {
     if (!board) return;
     if (sun) board->mSunMoney=9990;
-    if (recharge && board->mSeedBank) {
+    if (recharge && board->mSeedBank && !board->HasConveyorBeltSeedBank()) {
         for (int i=0;i<board->mSeedBank->mNumPackets;++i) {
             auto& packet=board->mSeedBank->mSeedPackets[i];
-            packet.mRefreshCounter=0;
-            packet.mRefreshing=false;
+            if (packet.mPacketType==SeedType::SEED_NONE || packet.mSlotMachineCountDown>0)
+                continue;
+            if (packet.mRefreshing || !packet.mActive) {
+                packet.mRefreshCounter=0;
+                packet.mRefreshing=false;
+                packet.Activate();
+            }
         }
     }
     if (invincible) {
