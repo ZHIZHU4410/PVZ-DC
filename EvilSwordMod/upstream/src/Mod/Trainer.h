@@ -4,6 +4,7 @@ namespace Sexy { class Graphics; }
 class Board;
 namespace Trainer {
 bool KeyDown(Sexy::KeyCode key);
+bool MouseDown(Board* board, int x, int y, int clickCount);
 void Update(Board* board);
 void Draw(Sexy::Graphics* graphics);
 bool InfiniteSun();

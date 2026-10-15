@@ -4502,6 +4502,11 @@ void Board::MouseDown(int x, int y, int theClickCount)
 {
 	UpdateMousePosition();
 	Widget::MouseDown(x, y, theClickCount);
+	if (Trainer::MouseDown(this, x, y, theClickCount))
+	{
+		mIgnoreMouseUp = true;
+		return;
+	}
 	mIgnoreMouseUp = !CanInteractWithBoardButtons();
 	if (mTimeStopCounter > 0)
 		return;

@@ -2,8 +2,6 @@
 
 基于开源项目 [CypressVillage/PvZ-Portable-Mods](https://github.com/CypressVillage/PvZ-Portable-Mods) 的本地二次开发。MOD 读取当前目录的《植物大战僵尸》正版 `main.pak` 和 `properties`，使用独立程序和独立存档。原版 `PlantsVsZombies.exe` 不会被替换。
 
-本仓库仅发布源码与原创资源。首次使用请先按[仓库首页说明](../README.md)下载依赖并编译。
-
 ## 启动
 
 - 双击游戏根目录的 `启动诅咒剑草MOD.bat`，进入 MOD 主菜单。
@@ -28,8 +26,11 @@
 | F8 | 普通植物无敌；诅咒剑草仍会触发诅咒 |
 | F9 | 降低游戏速度：8×、4×、2×、1×、0.25×逐档切换 |
 | F10 | 提高游戏速度：0.25×、1×、2×、4×、8×逐档切换 |
+| F11 | 切换“移动植物”工具；也可点击画面底部的“F11 移动植物”按钮 |
 
 游戏画面底部显示开关和速度状态。开关默认关闭，速度默认 1×，每次启动重置。
+
+移动植物工具在各关卡模式中都可打开：启用后点击一株植物，再点击目标空格。同格的睡莲、花盆、南瓜罩和主植物会一起移动，玉米加农炮需要连续两个空格；已有植物、障碍或地形不匹配的目标会被拒绝。移动不消耗阳光，植物保留当前生命值和状态。右键或 Esc 退出工具；在禅境花园中会沿用游戏原有的盆栽移动逻辑。
 
 诅咒剑草在草地上待机时会左右轻摆；攻击时按 A、B、A 连击顺序播放《Dead Cells》诅咒之刃在 `data.cdb` 中指定的 `fxSaberA`/`fxSaberB` 图集帧。本机帧文件位于 `EvilSwordMod\private-dc-fx`，由 `extract_dc_fx.py` 从用户自己拥有的 Dead Cells `res` 目录只读提取。重新提取时运行 `py -m pip install Pillow`，再运行 `py EvilSwordMod\extract_dc_fx.py --res "你的 Dead Cells res 目录"`；随后重启 MOD。私有帧不随开源仓库发布。
 
@@ -41,11 +42,12 @@
 4. 让僵尸触碰诅咒剑草；再试南瓜罩、前排坚果、小鬼、矿工背袭与蹦极，确认本体一旦被触碰即消失。
 5. 分别按 F6/F7/F8，确认底部状态切换、阳光数、卡牌冷却和普通植物受伤行为；打开 F8 后再检查诅咒剑草仍会枯萎。
 6. 关闭游戏重新启动，确认独立存档保留全解锁状态。
+7. 在白天、泳池、屋顶及迷你游戏中按 F11 或点击“移动植物”：先选植物再选空格；检查普通植物、睡莲组合、花盆组合与玉米加农炮的位置变化，并确认有植物或障碍的目标不会覆盖原有内容。右键或 Esc 应能退出工具。
 
 如果遇到错误，请记录关卡、操作步骤和 `EvilSwordMod\save\userdata\log.txt`，以及画面上显示的文字。
 
 ## 开发与来源
 
-运行 `powershell -ExecutionPolicy Bypass -File EvilSwordMod\build.ps1` 编译；成功后程序位于 `EvilSwordMod\build\pvz-portable.exe`。开源基础沿用 LGPL-3.0-or-later；代码修改位于 `EvilSwordMod\upstream`，MOD 清单与资源位于其 `mods\evilsword` 子目录。Dead Cells 的资源只读用于造型参考和玩家本机特效提取，不改动该游戏目录。
+如需重新编译，运行 `powershell -ExecutionPolicy Bypass -File EvilSwordMod\build.ps1`。已编译程序在 `EvilSwordMod\build\pvz-portable.exe`。开源基础沿用 LGPL-3.0-or-later；代码修改位于 `EvilSwordMod\upstream`，MOD 清单与资源位于其 `mods\evilsword` 子目录。Dead Cells 的资源只读用于造型参考和本机特效提取，没有改动该游戏目录。
 
 `EvilSwordMod\reference`、`private-dc-fx`、`backup`、`save`、`toolchain`、`venv` 和构建产物均为本机工作文件，包含用户自己的游戏资源或环境，不应随 MOD 公开发布。
